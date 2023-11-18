@@ -1,6 +1,6 @@
 {
     "name": "@rampagecorp/redis",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "Developer SDK API library for interacting with RAMPAGE.Host Redis 7 server.",
     "homepage": "https://os.rampage.place",
     "keywords": [

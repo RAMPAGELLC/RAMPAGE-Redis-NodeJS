@@ -60,15 +60,13 @@ class RedisAPI {
     authenticate(password) {
         return __awaiter(this, void 0, void 0, function* () {
             const response = yield this.sendCommand('HELLO', [password]);
-            if (!response.includes('OK')) {
+            if (!response.includes('OK'))
                 throw new Error('Authentication failed');
-            }
         });
     }
     sendCommand(command, params) {
         return __awaiter(this, void 0, void 0, function* () {
-            const commandString = this.buildCommandString(command, params);
-            this.socket.write(commandString);
+            this.socket.write(this.buildCommandString(command, params));
             return yield this.readResponse();
         });
     }
@@ -82,8 +80,7 @@ class RedisAPI {
     readResponse() {
         return new Promise((resolve, reject) => {
             this.socket.once('data', (data) => {
-                const response = data.toString('utf-8').trim();
-                resolve(response);
+                resolve(data.toString('utf-8').trim());
             });
             this.socket.once('error', (error) => {
                 reject(new Error(`Error reading from Redis server: ${error.message}`));

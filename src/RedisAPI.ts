@@ -27,15 +27,12 @@ class RedisAPI {
 
     private async authenticate(password: string): Promise<void> {
         const response = await this.sendCommand('HELLO', [password]);
-        
-        if (!response.includes('OK')) {
-            throw new Error('Authentication failed');
-        }
+
+        if (!response.includes('OK'))  throw new Error('Authentication failed');
     }
 
     public async sendCommand(command: string, params: string[]): Promise<string> {
-        const commandString: string = this.buildCommandString(command, params);
-        this.socket.write(commandString);
+        this.socket.write(this.buildCommandString(command, params));
 
         return await this.readResponse();
     }
@@ -53,8 +50,7 @@ class RedisAPI {
     private readResponse(): Promise<string> {
         return new Promise((resolve, reject) => {
             this.socket.once('data', (data: Buffer) => {
-                const response: string = data.toString('utf-8').trim();
-                resolve(response);
+                resolve(data.toString('utf-8').trim());
             });
 
             this.socket.once('error', (error: Error) => {

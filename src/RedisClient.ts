@@ -12,12 +12,16 @@ class RedisClient {
         this.redis = new RedisAPI(host, port, password);
     }
 
-    set(key: string, value: string): void {
-        this.redis.sendCommand('SET', [key, value]);
+    set(key: string, value: any): void {
+        this.redis.sendCommand('SET', [key, this.serializeValue(value)]);
     }
 
-    async get(key: string): Promise<string> {
-        return await this.redis.sendCommand('GET', [key]);
+    async get<T>(key: string): Promise<T | null> {
+        const serializedValue = await this.redis.sendCommand('GET', [key]);
+
+        if (serializedValue) return this.deserializeValue<T>(serializedValue);
+
+        return null;
     }
 
     delete(key: string): void {
@@ -26,6 +30,22 @@ class RedisClient {
 
     close(): void {
         this.redis.close();
+    }
+
+    private serializeValue(value: any): string {
+        if (typeof value === 'object') {
+            return JSON.stringify(value);
+        } else {
+            return String(value);
+        }
+    }
+
+    private deserializeValue<T>(serializedValue: string): T | null {
+        try {
+            return JSON.parse(serializedValue) as T;
+        } catch (error) {
+            return null;
+        }
     }
 }
 
