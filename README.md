@@ -4,6 +4,8 @@ Interact with Redis 7 on your RAMPAGE.Host server.
 
 Rent a server today: https://rampagecloud.com/store/game-hosting
 
+NPM: https://www.npmjs.com/package/@rampagecorp/redis
+
 # Code Example
 
 ```js
