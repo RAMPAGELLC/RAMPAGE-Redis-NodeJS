@@ -1,0 +1,55 @@
+{
+    "name": "@rampagecorp/redis",
+    "version": "1.0.0",
+    "description": "Developer SDK API library for interacting with RAMPAGE.Host Redis 7 server.",
+    "homepage": "https://os.rampage.place",
+    "keywords": [
+        "redis",
+        "redis-7",
+        "api",
+        "library",
+        "rampage",
+        "rampage.host",
+        "rampagecloud"
+    ],
+    "main": "src/index.js",
+    "directories": {
+        "test": "test"
+    },
+    "bugs": {
+        "url": "https://github.com/RAMPAGELLC/RAMPAGE-Redis-NodeJS/issues",
+        "email": "support@rampage.host"
+    },
+    "scripts": {
+        "test": "tsc && mocha",
+        "build": "tsc && npm pack --pack-destination=build"
+    },
+    "files": [
+        "/src"
+    ],
+    "type": "commonjs",
+    "dependencies": {
+        "assert": "^2.0.0",
+        "net": "^1.0.2",
+        "package.json": "^2.0.1"
+    },
+    "devDependencies": {
+        "@types/node": "^17.0.23",
+        "dotenv": "^16.0.0",
+        "mocha": "^9.2.2"
+    },
+    "author": "rampagecorp",
+    "funding": {
+        "type": "patreon",
+        "url": "https://www.patreon.com/metatable"
+    },
+    "repository": "https://github.com/RAMPAGELLC/RAMPAGE-Redis-NodeJS",
+    "contributors": [
+        {
+            "name": "Jake G",
+            "email": "cm_jake@rampagestudios.org",
+            "url": "https://vq9o.com/"
+        }
+    ],
+    "license": "MIT"
+}
