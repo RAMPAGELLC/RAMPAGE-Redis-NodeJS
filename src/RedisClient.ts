@@ -8,8 +8,8 @@ import RedisAPI from "./RedisAPI";
 class RedisClient {
     private redis: RedisAPI;
 
-    constructor(host: string, port: number) {
-        this.redis = new RedisAPI(host, port);
+    constructor(host: string, port: number, password?: string) {
+        this.redis = new RedisAPI(host, port, password);
     }
 
     set(key: string, value: string): void {

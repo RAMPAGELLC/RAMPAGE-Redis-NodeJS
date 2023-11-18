@@ -8,20 +8,29 @@ import * as net from 'net';
 class RedisAPI {
     private socket: net.Socket;
 
-    constructor(host: string, port: number) {
+    constructor(private host: string, private port: number, private password?: string) {
         try {
-            this.connect(host, port);
+            this.connect();
+            if (password) this.authenticate(password);
         } catch (error) {
             throw new Error(`Unable to connect to Redis server: ${error.message}`);
         }
     }
 
-    private connect(host: string, port: number): void {
-        this.socket = net.createConnection(port, host);
+    private connect(): void {
+        this.socket = net.createConnection(this.port, this.host);
 
         this.socket.on('error', (error: Error) => {
             throw new Error(`Unable to connect to Redis server: ${error.message}`);
         });
+    }
+
+    private async authenticate(password: string): Promise<void> {
+        const response = await this.sendCommand('HELLO', [password]);
+        
+        if (!response.includes('OK')) {
+            throw new Error('Authentication failed');
+        }
     }
 
     public async sendCommand(command: string, params: string[]): Promise<string> {
@@ -35,7 +44,7 @@ class RedisAPI {
         let commandString: string = `*${params.length + 1}\r\n${command}\r\n`;
 
         params.forEach(param => {
-            commandString += `${param}\r\n`;
+            commandString += `$${Buffer.from(param).length}\r\n${param}\r\n`;
         });
 
         return commandString;

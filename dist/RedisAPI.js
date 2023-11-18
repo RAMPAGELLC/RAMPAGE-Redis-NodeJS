@@ -38,18 +38,31 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const net = __importStar(require("net"));
 class RedisAPI {
-    constructor(host, port) {
+    constructor(host, port, password) {
+        this.host = host;
+        this.port = port;
+        this.password = password;
         try {
-            this.connect(host, port);
+            this.connect();
+            if (password)
+                this.authenticate(password);
         }
         catch (error) {
             throw new Error(`Unable to connect to Redis server: ${error.message}`);
         }
     }
-    connect(host, port) {
-        this.socket = net.createConnection(port, host);
+    connect() {
+        this.socket = net.createConnection(this.port, this.host);
         this.socket.on('error', (error) => {
             throw new Error(`Unable to connect to Redis server: ${error.message}`);
+        });
+    }
+    authenticate(password) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const response = yield this.sendCommand('HELLO', [password]);
+            if (!response.includes('OK')) {
+                throw new Error('Authentication failed');
+            }
         });
     }
     sendCommand(command, params) {
@@ -62,7 +75,7 @@ class RedisAPI {
     buildCommandString(command, params) {
         let commandString = `*${params.length + 1}\r\n${command}\r\n`;
         params.forEach(param => {
-            commandString += `${param}\r\n`;
+            commandString += `$${Buffer.from(param).length}\r\n${param}\r\n`;
         });
         return commandString;
     }

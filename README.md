@@ -1,15 +1,17 @@
 # RAMPAGE-Redis-NodeJS
+
 Interact with Redis 7 on your RAMPAGE.Host server.
 
 Rent a server today: https://rampagecloud.com/store/game-hosting
 
 # Code Example
+
 ```js
-const Redis = require("@rampagecorp/redis");
+const RedisClient = require("@rampagecorp/redis");
 const redisHost = "region.shared.rampage.host";
 const redisPort = 3000;
-
-const redisClient = new RedisClient(redisHost, redisPort);
+const redisPassword = process.env.redisPassword;
+const redisClient = new RedisClient(redisHost, redisPort, redisPassword);
 
 try {
   // Set a key-value pair

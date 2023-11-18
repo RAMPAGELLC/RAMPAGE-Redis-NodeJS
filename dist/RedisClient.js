@@ -17,8 +17,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 const RedisAPI_1 = __importDefault(require("./RedisAPI"));
 class RedisClient {
-    constructor(host, port) {
-        this.redis = new RedisAPI_1.default(host, port);
+    constructor(host, port, password) {
+        this.redis = new RedisAPI_1.default(host, port, password);
     }
     set(key, value) {
         this.redis.sendCommand('SET', [key, value]);
